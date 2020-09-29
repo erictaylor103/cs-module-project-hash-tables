@@ -20,11 +20,10 @@ class HashTable:
     Implement this.
     """
 
-    def __init__(self, capacity):
+    def __init__(self, capacity=MIN_CAPACITY):
         # Your code here
-        self.capacity = MIN_CAPACITY
-        self.hash_table = [None] * self.capacity
-        print(f"My Hash Table: {self.hash_table} \n")
+        self.capacity = capacity
+        self.hash_table = [None] * capacity
 
     def get_num_slots(self):
         """
@@ -38,9 +37,6 @@ class HashTable:
         """
         # Your code here
         return self.capacity
-        #print(f"My Hash Table Capacity: {self.capacity} \n")
-
-        
 
 
     def get_load_factor(self):
@@ -95,8 +91,7 @@ class HashTable:
         """
         # Your code here
         index = self.hash_index(key)
-        print(f"My Index: {index}")
-        self.hash_table[index] = self.value
+        self.hash_table[index] = value
         
 
     def delete(self, key):
