@@ -11,6 +11,10 @@ class HashTableEntry:
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
 
+#create the linked list with an empty head
+class LinkedList:
+    def __init__(self):
+        self.head = None
 
 class HashTable:
     """
@@ -23,7 +27,9 @@ class HashTable:
     def __init__(self, capacity=MIN_CAPACITY):
         # Your code here
         self.capacity = capacity
-        self.hash_table = [None] * capacity
+        #self.hash_table = [None] * capacity
+        self.hash_table = [LinkedList()] * capacity
+        self.item_count = 0
 
     def get_num_slots(self):
         """
@@ -36,7 +42,8 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        return self.capacity
+        #return self.hash_table
+        return len(self.hash_table)
 
 
     def get_load_factor(self):
@@ -46,7 +53,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        return self.item_count / self.capacity
 
     def fnv1(self, key):
         """
@@ -80,7 +87,6 @@ class HashTable:
         return self.djb2(key) % self.capacity
 
     def put(self, key, value):
-        #self.value = value
         """
         
         Store the value with the given key.
@@ -91,7 +97,23 @@ class HashTable:
         """
         # Your code here
         index = self.hash_index(key)
-        self.hash_table[index] = value
+        #self.hash_table[index] = value
+        if self.hash_table[index].head == None:
+            self.hash_table[index].head = HashTableEntry(key, value)
+            self.item_count += 1
+            return
+        
+        else:
+            current = self.hash_table[index].head
+        
+        while current.next is not None:
+            if current.key == key:
+                current.value = value
+            current = current.next
+        
+        current.next = HashTableEntry(key, value)
+        self.item_count += 1
+
         
 
     def delete(self, key):
@@ -104,12 +126,28 @@ class HashTable:
         """
         # Your code here
         index = self.hash_index(key)
+        current = self.hash_table[index].head
         removed_value = self.hash_table[index]
 
-        if self.hash_table[index] is None:
-            print("The key is not in here")
-        else:
-            self.hash_table[index] = None
+        #if self.hash_table[index] is None:
+        #    print("The key is not in here")
+        #else:
+        #    self.hash_table[index] = None
+
+        if current.key == key:
+            self.hash_table[index].head = self.hash_table[index].head.next
+            self.item_count += 1
+            return
+        
+        while current.next is not None:
+            previous = current
+            current = current.next
+            if current.key == key:
+                previous.next = current.next
+                current.next = None
+                self.item_count -= 1
+                print(f"Removed Value: {removed_value}")
+                return None
 
     def get(self, key):
         """
@@ -121,9 +159,20 @@ class HashTable:
         """
         # Your code here
         index = self.hash_index(key)
-        hashed_value = self.hash_table[index]
+        current = self.hash_table[index].head
 
-        return hashed_value        
+        if current == None:
+            return None
+        
+        if current.key == key:
+            return current.value
+        
+        while current.next is not None:
+            current = current.next
+            if current.key == key:
+                return current.value
+        #if we get here it's because the key is not in the hashtable
+        return None
         
 
     def resize(self, new_capacity):
@@ -134,7 +183,28 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        self.capacity = new_capacity
+        new_list = [LinkedList()] * self.capacity
+        print(f"MY NEW CAPACITY IS: {self.capacity} \n")
 
+        for i in self.hash_table:
+            current = i.head
+
+            while current is not None:
+                index = self.hash_index(current.key)
+
+                if new_list[index].head == None:
+                    new_list[index].head = HashTableEntry(current.key, current.value)
+
+                else:
+                    node = HashTableEntry(current.key, current.value)
+
+                    node.next = new_list[index].head
+
+                    new_list[index].head = node
+
+                current = current.next
+            self.hash_table = new_list
 
 
 if __name__ == "__main__":
