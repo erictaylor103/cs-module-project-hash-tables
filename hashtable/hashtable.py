@@ -42,8 +42,8 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        #return self.hash_table
-        return len(self.hash_table)
+        return self.hash_table
+        #return f"Slots Total: {len(self.hash_table)}"
 
 
     def get_load_factor(self):

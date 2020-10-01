@@ -1,6 +1,17 @@
+import re
+
 def word_count(s):
     # Your code here
+    s = re.sub('[\"\:\;\,\.\-\+\=\/\\\|[\]\{\}\(\)\*\^\&]', '', s)
+    wordList = {}
 
+    for c in s.lower().split():
+        if c not in wordList:
+            wordList[c] = 1
+        else:
+            wordList[c] += 1
+        
+    return wordList
 
 
 if __name__ == "__main__":
