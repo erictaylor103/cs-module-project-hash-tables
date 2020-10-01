@@ -1,3 +1,4 @@
+#the re module is used for replacing characters
 import re
 
 def word_count(s):
@@ -7,10 +8,9 @@ def word_count(s):
 
     for c in s.lower().split():
         if c not in words:
-            words[c] = 1
+            words[c] = 1 #initialize
         else:
             words[c] += 1
-    
     return words
 
 

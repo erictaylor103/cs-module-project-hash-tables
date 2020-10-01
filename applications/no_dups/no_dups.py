@@ -6,11 +6,11 @@ def no_dups(s):
 
     for word in words:
         if word not in cache:
-            cache[word] = 1 #this is just an initializer. Put the word in cash if not there.
-            words_list.append(word)
-    #print (words_list)
+            cache[word] = 1 #this is just an initializer.
+            words_list.append(word) #append the word to the word_list if not in cache already
+    print (words_list)
     joined_words_list = " ".join(words_list)
-    #print(joined_words_list)
+    print(joined_words_list)
     return joined_words_list
 
 
