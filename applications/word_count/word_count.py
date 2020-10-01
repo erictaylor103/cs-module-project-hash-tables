@@ -1,6 +1,17 @@
+#the re module is used for replacing characters
+import re
+
 def word_count(s):
     # Your code here
+    s = re.sub('[\"\:\;\,\.\-\+\=\/\\\|[\]\{\}\(\)\*\^\&]', "", s)
+    words = {}
 
+    for c in s.lower().split():
+        if c not in words:
+            words[c] = 1 #initialize
+        else:
+            words[c] += 1
+    return words
 
 
 if __name__ == "__main__":
